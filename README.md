@@ -31,7 +31,7 @@ Notes:
 
 ## Database Migrations
 Migration file:
-- `/home/runner/work/Booklet/Booklet/supabase/migrations/20260418163000_initial_mvp.sql`
+- `supabase/migrations/20260418163000_initial_mvp.sql`
 
 Apply with Supabase CLI (example):
 
