@@ -8,6 +8,7 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -20,6 +21,7 @@ export default function SearchPage() {
 
     setLoading(true);
     setError(null);
+    setMessage(null);
 
     try {
       const response = await fetch(`/api/books/search?q=${encodeURIComponent(query)}`);
@@ -56,10 +58,12 @@ export default function SearchPage() {
     const payload = (await response.json()) as { ok: boolean; error?: { message: string } };
     if (!payload.ok) {
       setError(payload.error?.message || "Unable to add to shelf.");
+      setMessage(null);
       return;
     }
 
-    setError("Added to TBR shelf.");
+    setError(null);
+    setMessage("Added to TBR shelf.");
   }
 
   return (
@@ -78,6 +82,7 @@ export default function SearchPage() {
       </form>
 
       {error ? <p className="muted">{error}</p> : null}
+      {message ? <p className="muted">{message}</p> : null}
 
       <div className="grid">
         {books.map((book) => (

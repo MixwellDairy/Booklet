@@ -97,10 +97,11 @@ export async function listShelfItems(userId: string, status?: ShelfStatus): Prom
   }
 
   return data.map((row) => {
-    const bookPayload = row.books as { normalized_metadata: Book } | { normalized_metadata: Book }[] | null;
-    const book = Array.isArray(bookPayload)
-      ? (bookPayload[0]?.normalized_metadata as Book | undefined)
-      : (bookPayload?.normalized_metadata as Book | undefined);
+    const bookSource = row.books as unknown;
+    const bookPayload = (Array.isArray(bookSource) ? bookSource[0] : bookSource) as
+      | { normalized_metadata?: Book }
+      | null;
+    const book = bookPayload?.normalized_metadata;
 
     return {
       userId: row.user_id,

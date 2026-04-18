@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       shelfItems,
       discoverBooks,
       maxCandidates: 60,
-    }).filter((book) => (typeof maxPages === "number" ? (book.pageCount || 0) <= maxPages : true));
+    }).filter((book) => !maxPages || (book.pageCount || 0) <= maxPages);
 
     const ranking = await rankCandidatesWithGroq(candidatePool, body);
 

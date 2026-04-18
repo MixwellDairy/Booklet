@@ -1,5 +1,3 @@
-create extension if not exists pgcrypto;
-
 create table if not exists profiles (
   id uuid primary key,
   email text unique,
@@ -27,8 +25,7 @@ create table if not exists books (
   published_date text,
   normalized_metadata jsonb not null,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint books_isbn13_unique unique (isbn13)
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists shelf_items (
@@ -43,5 +40,6 @@ create table if not exists shelf_items (
 create index if not exists idx_shelf_items_user_status on shelf_items(user_id, status);
 create index if not exists idx_shelf_items_updated_at on shelf_items(updated_at desc);
 create index if not exists idx_books_title on books(title);
+create unique index if not exists idx_books_isbn13_unique on books(isbn13) where isbn13 is not null;
 create index if not exists idx_books_authors_gin on books using gin (authors);
 create index if not exists idx_books_categories_gin on books using gin (categories);
